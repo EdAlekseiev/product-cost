@@ -9,20 +9,16 @@ public class Main {
         Product product = new Product(data[0],
             Integer.parseInt(data[1]),
             Double.parseDouble(data[2]));
-        // Розраховуємо базову вартість товару
-        CalcCostBase costBase = new CalcCostBase();
-        double baseCost = costBase.calcCost(product);
-        // Розраховуємо вартість товару, з урахуванням доставки
-        CalcCostDelivery costDelivery = new CalcCostDelivery();
-        double deliveryCost = costDelivery.calcCost(product);
-        // Формуємо виведення
-        String baseOutput = product + "\nCost is " +
-            Constants.CURRENCY + " " + baseCost + ".";
-        String deliveryOutput = product + "\nCost is " +
-            Constants.CURRENCY + " " + deliveryCost + ".";
-        // Виводимо результат
-        getOutput(baseOutput);
-        getOutput(deliveryOutput);
+
+        CostComputable[] calcsCost = {
+                new CalcCostBase(),
+                new CalcCostDelivery(),
+        };
+        for(CostComputable calcCost : calcsCost) {
+            double cost = calculateCost(product, calcCost);
+            String costOutput = formatCostOutput(cost, product);
+            getOutput(costOutput);
+        }
     }
 
     // Набір вхідних даних
@@ -32,5 +28,14 @@ public class Main {
 
     public static void getOutput(String output) {
         System.out.println(output);
+    }
+
+    public static double calculateCost(Product product, CostComputable calcCost) {
+        return calcCost.calcCost(product);
+    }
+
+    public static String formatCostOutput(double cost, Product product) {
+        return product + "\nCost is " +
+            Constants.CURRENCY + " " + cost + ".";
     }
 }
