@@ -13,7 +13,7 @@ public class CalcCostDelivery extends CalcCostBase {
     // з урахуванням вартості доставки
     @Override
     public double calcCost(Product product) {
-        return (product.getQuota() * product.getPrice()) + deliveryPrice;
+        return super.calcCost(product) + deliveryPrice;
     }
 }
 
